@@ -71,18 +71,6 @@ class Rainbow_Address_Bar {
 	public function rab_active_function() {
 		add_option( 'rab-switch', 1 );
 		add_option( 'rab-amp-switch', 0 );
-
-		$default_post_type = array(
-			array(
-				'post_type' => 'post',
-				'rab_color' => '#ffffff',
-			),
-			array(
-				'post_type' => 'page',
-				'rab_color' => '#ffffff',
-			),
-		);
-		add_option( 'rab-post-type', $default_post_type );
 	}
 
 	/**
