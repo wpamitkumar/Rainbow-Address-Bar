@@ -290,6 +290,8 @@ class Rainbow_Address_Bar {
 
 		$temp_var = 0;
 		foreach ( $all_post_type as  $post_type ) {
+			$is_checked = '';
+			$post_color = '';
 			if ( is_array( $post_selected ) ) {
 				foreach ( $post_selected as $key => $value ) {
 					if ( in_array( $post_type, $value, true ) ) {
@@ -302,8 +304,6 @@ class Rainbow_Address_Bar {
 			printf( '<div class="rab-post-list-input"><label class="switch"><input type="checkbox" name="rab-post-type[%1$s][post_type]" class="rab-post-switch" value="%2$s" %3$s ><span class="slider round"></span></label> %2$s </div>', esc_html( $temp_var ), esc_attr( ( $post_type ) ), esc_html( $is_checked ) );
 			printf( '<div class="rab-post-list-button"><input type="text" name="rab-post-type[%1$s][rab_color]" id="rab-post-color" class="rab-post-color" value="%2$s" /></div><br>', esc_html( $temp_var ), esc_html( $post_color ) );
 			printf( '</div>' );
-			$is_checked = '';
-			$post_color = '';
 			$temp_var++;
 		}
 		$temp_var = 0;
