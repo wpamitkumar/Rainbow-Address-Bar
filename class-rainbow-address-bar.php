@@ -5,7 +5,7 @@
  * Description: Rainbow address bar change the color of the browser address bar on your mobile devices.
  * Author: Amit Dudhat, Dhruv Pandya, hiddeninfotech
  * Author URI: http://disruptivebulb.com/
- * Version: 1.0.2
+ * Version: 1.0.3
  * Text Domain: rainbow-address-bar
  * Domain Path: languages
  *
@@ -23,7 +23,7 @@
  *
  * @package RainbowAddressBar
  * @author Amit Dudhat, Dhruv Pandya
- * @version 1.0.2
+ * @version 1.0.0
  */
 
 /**
@@ -38,7 +38,6 @@ class Rainbow_Address_Bar {
 	 */
 	public function __construct() {
 		register_activation_hook( __FILE__, array( $this, 'rab_active_function' ) );
-		add_action( 'activated_plugin', array( $this, 'rab_activation_redirect' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'rab_assets' ) );
 
 		// If AMP Plugin is enable.
@@ -71,18 +70,6 @@ class Rainbow_Address_Bar {
 	public function rab_active_function() {
 		add_option( 'rab-switch', 1 );
 		add_option( 'rab-amp-switch', 0 );
-	}
-
-	/**
-	 * Plugin activation successfull after Redirection on setting page.
-	 *
-	 * @param [string] $plugin Path to the plugin file relative to the plugins directory.
-	 * @return void
-	 */
-	public function rab_activation_redirect( $plugin ) {
-		if ( plugin_basename( __FILE__ ) === $plugin ) {
-			exit( esc_url( wp_safe_redirect( admin_url( 'themes.php?page=rainbow-address-bar' ) ) ) );
-		}
 	}
 
 	/**
