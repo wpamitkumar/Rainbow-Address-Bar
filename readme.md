@@ -2,9 +2,9 @@
 
 Contributors: wpamitkumar,dhruvpandya,hiddeninfotech
 Tags: address bar color, google chrome bar color, amp address bar, mobile address bar color, theme color, meta tag for theme color, theme color on address bar, address bar, google chrome color, amp, color, bar, address tab, mobile bar color, mobile address bar, chrome, mobile color, url bar color, url, amp color bar, color browser, color chrome, color pick, metabox, meta field
-Stable tag:1.0.2
+Stable tag:1.0.3
 Requires at least: 4.1
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -55,14 +55,21 @@ Yes, you can please open an [issue](https://github.com/wpamitkumar/Rainbow-Addre
 
 ## Changelog 
 
-### 1.0.0 - 12/11/2019 
+### 1.0.0 - 12/11/2019
 * Initial Release.
 
-### 1.0.1 - 15/02/2019 
+### 1.0.1 - 15/02/2020
 * Fix Minor bugs.
 
-### 1.0.2 - 17/02/2019 
+### 1.0.2 - 17/02/2020
+* Fix Minor bugs.
+
+### 1.0.3 - 06/07/2020
+* Remove forcefully redirection after plugin activate.
+* Remove Default option values.
 * Fix Minor bugs.
 
 ## Upgrade Notice 
+* Remove forcefully redirection after plugin activate.
+* Remove Default option values.
 * Fix Minor bugs.

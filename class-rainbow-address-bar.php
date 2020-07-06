@@ -5,7 +5,7 @@
  * Description: Rainbow address bar change the color of the browser address bar on your mobile devices.
  * Author: Amit Dudhat, Dhruv Pandya, hiddeninfotech
  * Author URI: http://disruptivebulb.com/
- * Version: 1.0.2
+ * Version: 1.0.3
  * Text Domain: rainbow-address-bar
  * Domain Path: languages
  *
@@ -23,7 +23,7 @@
  *
  * @package RainbowAddressBar
  * @author Amit Dudhat, Dhruv Pandya
- * @version 1.0.2
+ * @version 1.0.0
  */
 
 /**
