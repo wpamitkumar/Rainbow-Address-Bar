@@ -3,9 +3,9 @@
  * Plugin Name: Rainbow Address Bar
  * Plugin URI: https://wordpress.org/plugins/rainbow-address-bar/
  * Description: Rainbow address bar change the color of the browser address bar on your mobile devices.
- * Author: Amit Dudhat, Dhruv Pandya, hiddeninfotech
+ * Author: Amit Dudhat, Dhruv Pandya
  * Author URI: http://disruptivebulb.com/
- * Version: 1.0.3
+ * Version: 1.0.4
  * Text Domain: rainbow-address-bar
  * Domain Path: languages
  *
