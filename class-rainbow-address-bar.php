@@ -324,14 +324,16 @@ class Rainbow_Address_Bar {
 	public function rab_add_color_metaboxes() {
 		$rab_post_type = get_option( 'rab-post-type' );
 		foreach ( $rab_post_type as $post_type ) {
-			add_meta_box(
-				'rab_color_meta',
-				__( 'Rainbow Address Bar Color', 'rainbow-address-bar' ),
-				array( $this, 'rab_color_meta' ),
-				$post_type,
-				'side',
-				'high'
-			);
+			if ( ! empty( $post_type['post_type'] ) && post_type_exists( $post_type['post_type'] ) ) {
+				add_meta_box(
+					'rab_color_meta',
+					__( 'Rainbow Address Bar Color', 'rainbow-address-bar' ),
+					array( $this, 'rab_color_meta' ),
+					$post_type['post_type'] ,
+					'side',
+					'high'
+				);
+			}
 		}
 	}
 
