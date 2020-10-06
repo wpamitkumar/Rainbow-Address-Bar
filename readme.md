@@ -2,7 +2,7 @@
 
 Contributors: wpamitkumar,dhruvpandya
 Tags: address bar color, google chrome bar color, amp address bar, mobile address bar color, theme color, meta tag for theme color, theme color on address bar, address bar, google chrome color, amp, color, bar, address tab, mobile bar color, mobile address bar, chrome, mobile color, url bar color, url, amp color bar, color browser, color chrome, color pick, metabox, meta field
-Stable tag:1.0.4
+Stable tag:1.0.4.1
 Requires at least: 4.1
 Tested up to: 5.5
 Requires PHP: 5.6
