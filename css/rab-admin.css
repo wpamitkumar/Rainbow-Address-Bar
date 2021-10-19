@@ -11,18 +11,18 @@
 	padding: 20px;
 	color: #fff;
 	text-transform: uppercase;
-	background: linear-gradient(35deg, rgb(146, 113, 255) 0%, rgb(87, 37, 255) 100%);
+	background: linear-gradient(36deg, rgb(145, 112, 254) 5%, rgb(88, 39, 255) 100%);
 	text-align: center;
-	font-size: 20px;
+	font-size: 25px;
 	border-radius: .25rem;
-	box-shadow: 0px 8px 21px 0px rgba(36, 39, 50, 0.08);
+	box-shadow: 0px 8px 21px 0px rgba(36, 39, 50, 0.09);
 	margin-bottom: 1rem;
 }
 
 .appearance_page_rainbow-address-bar .switch {
 	position: relative;
 	display: inline-block;
-	width: 50px;
+	width: 55px;
 	height: 22px;
 }
 
@@ -114,7 +114,7 @@
 }
 
 .appearance_page_rainbow-address-bar .iris-picker.iris-border {
-	margin: 0;
+	margin: 5px 0px;
 }
 
 .appearance_page_rainbow-address-bar span.wp-picker-input-wrap input.wp-picker-clear,
@@ -132,7 +132,7 @@
 	word-wrap: break-word;
 }
 
-@media only screen and ( max-device-width: 480px ) {
+@media only screen and ( max-device-width: 500px ) {
 	.appearance_page_rainbow-address-bar .rab-post-list {
 		flex-flow: row wrap;
 	}
