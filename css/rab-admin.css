@@ -132,6 +132,10 @@
 	word-wrap: break-word;
 }
 
+.rab-margin-label {
+	margin: 0px 5px 0px 0px;
+}
+
 @media only screen and ( max-device-width: 480px ) {
 	.appearance_page_rainbow-address-bar .rab-post-list {
 		flex-flow: row wrap;

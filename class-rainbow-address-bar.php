@@ -4,7 +4,7 @@
  * Plugin URI: https://wordpress.org/plugins/rainbow-address-bar/
  * Description: Rainbow address bar change the color of the browser address bar on your mobile devices.
  * Author: Amit Dudhat, Dhruv Pandya
- * Author URI: http://disruptivebulb.com/
+ * Author URI: https://wpamitkumar.com/
  * Version: 1.0.4.1
  * Text Domain: rainbow-address-bar
  * Domain Path: languages
@@ -90,7 +90,8 @@ class Rainbow_Address_Bar {
 	 */
 	public function rab_add_head_tag() {
 		global $post;
-		$enable_rab = get_option( 'rab-switch' );
+		$enable_rab      = get_option( 'rab-switch' );
+		$enable_darkmode = get_option( 'rab-dark-mode-switch' );
 		if ( empty( $post ) ) {
 			$rab_color = get_option( 'rab-color' );
 		} else {
@@ -116,10 +117,21 @@ class Rainbow_Address_Bar {
 		}
 
 		if ( '0' !== $enable_rab ) {
-			printf(
-				'<meta name="theme-color" content="%1$s"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black">',
-				esc_html( $rab_color )
-			);
+			if ( '0' !== $enable_darkmode ) {
+				printf(
+					'<meta name="theme-color" content="%1$s" media="(prefers-color-scheme: light)"><meta name="apple-mobile-web-app-capable" content="yes" media="(prefers-color-scheme: light)><meta name="apple-mobile-web-app-status-bar-style" content="%1$s" media="(prefers-color-scheme: light)>',
+					( ( isset( $rab_color[0]['light-mode'] ) && ! empty( $rab_color[0]['light-mode'] ) ) ? esc_html( $rab_color[0]['light-mode'] ) : '#ffffff' )
+				);
+				printf(
+					'<meta name="theme-color" content="%1$s" media="(prefers-color-scheme: dark)"><meta name="apple-mobile-web-app-capable" content="yes" media="(prefers-color-scheme: dark)><meta name="apple-mobile-web-app-status-bar-style" content="%1$s" media="(prefers-color-scheme: dark)>',
+					( ( isset( $rab_color[0]['dark-mode'] ) && ! empty( $rab_color[0]['dark-mode'] ) ) ? esc_html( $rab_color[0]['dark-mode'] ) : '#000000' )
+				);
+			} else {
+				printf(
+					'<meta name="theme-color" content="%1$s" media="(prefers-color-scheme: light)"><meta name="apple-mobile-web-app-capable" content="yes" media="(prefers-color-scheme: light)><meta name="apple-mobile-web-app-status-bar-style" content="%1$s" media="(prefers-color-scheme: light)>',
+					( ( isset( $rab_color[0]['light-mode'] ) && ! empty( $rab_color[0]['light-mode'] ) ) ? esc_html( $rab_color[0]['light-mode'] ) : '#ffffff' )
+				);
+			}
 		}
 	}
 
@@ -191,6 +203,14 @@ class Rainbow_Address_Bar {
 		);
 		register_setting( 'rab_setting_section', 'rab-switch', $rab_switch_args );
 
+		add_settings_field( 'rab-dark-mode-switch', esc_html__( 'Enable Dark Mode', 'rainbow-address-bar' ), array( $this, 'rab_dark_mode_switch_element' ), 'rainbow-address-bar', 'rab_setting_section' );
+		$rab_dark_mode_switch_args = array(
+			'type'              => 'string',
+			'sanitize_callback' => array( $this, 'rab_sanitize_checkbox' ),
+			'default'           => 0,
+		);
+		register_setting( 'rab_setting_section', 'rab-dark-mode-switch', $rab_dark_mode_switch_args );
+
 		add_settings_field( 'rab-amp-switch', esc_html__( 'Enable Address Color Bar for AMP', 'rainbow-address-bar' ), array( $this, 'rab_amp_switch_element' ), 'rainbow-address-bar', 'rab_setting_section' );
 		$rab_amp_switch_args = array(
 			'type'              => 'string',
@@ -212,9 +232,9 @@ class Rainbow_Address_Bar {
 
 		add_settings_field( 'rab-color', esc_html__( 'Choose Global Address Color', 'rainbow-address-bar' ), array( $this, 'rab_color_field_element' ), 'rainbow-address-bar', 'rab_setting_section' );
 		$rab_color_args = array(
-			'type'              => 'string',
-			'sanitize_callback' => 'sanitize_text_field',
-			'default'           => '#ffffff',
+			'type'              => 'array',
+			'sanitize_callback' => array( $this, 'rab_sanitize_array' ),
+			'default'           => 0,
 		);
 		register_setting( 'rab_setting_section', 'rab-color', $rab_color_args );
 	}
@@ -234,12 +254,19 @@ class Rainbow_Address_Bar {
 	 * @return void
 	 */
 	public function rab_color_field_element() {
+		$rab_color       = get_option( 'rab-color' );
+		$enable_darkmode = get_option( 'rab-dark-mode-switch' );
 		// id and name of form element should be same as the setting name.
-		printf( '<input type="text" name="rab-color" id="rab-color" class="rab-post-color" value="%1$s" />', esc_html( get_option( 'rab-color' ) ) );
+		printf( '<input type="text" name="rab-color[0][light-mode]" id="rab-color" class="rab-post-color" value="%1$s" />', ( isset( $rab_color[0]['light-mode'] ) && ! empty( $rab_color[0]['light-mode'] ) ) ? esc_html( $rab_color[0]['light-mode'] ) : '#ffffff' );
+		if ( '0' !== $enable_darkmode ) {
+			printf( '<input type="text" name="rab-color[0][dark-mode]" id="rab-color-dark" class="rab-post-color rab-post-color-dark" value="%1$s" />', ( isset( $rab_color[0]['dark-mode'] ) && ! empty( $rab_color[0]['dark-mode'] ) ) ? esc_html( $rab_color[0]['dark-mode'] ) : '#000000' );
+		} else {
+			printf( '<input type="hidden" name="rab-color[0][dark-mode]" id="rab-color-dark" class="rab-post-color-dark" value="%1$s" />', ( isset( $rab_color[0]['dark-mode'] ) && ! empty( $rab_color[0]['dark-mode'] ) ) ? esc_html( $rab_color[0]['dark-mode'] ) : '#000000' );
+		}
 	}
 
 	/**
-	 * Callback for enable Rainbow Address BAr.
+	 * Callback for enable Rainbow Address Bar.
 	 *
 	 * @return void
 	 */
@@ -247,6 +274,17 @@ class Rainbow_Address_Bar {
 		$rab_enable = get_option( 'rab-switch' );
 		// id and name of form element should be same as the setting name.
 		printf( '<label class="switch"><input type="checkbox" name="rab-switch" id="rab-switch" value="1" %1$s /><span class="slider round"></span></label>', ( ( '0' !== $rab_enable ) ? ( esc_attr( 'checked' ) ) : '' ) );
+	}
+
+	/**
+	 * Callback for enable Dark Mode.
+	 *
+	 * @return void
+	 */
+	public function rab_dark_mode_switch_element() {
+		$dark_mode_enable = get_option( 'rab-dark-mode-switch' );
+		// id and name of form element should be same as the setting name.
+		printf( '<label class="switch"><input type="checkbox" name="rab-dark-mode-switch" id="rab-dark-mode-switch" value="1" %1$s /><span class="slider round"></span></label>', ( ( '0' !== $dark_mode_enable ) ? ( esc_attr( 'checked' ) ) : '' ) );
 	}
 
 	/**
@@ -273,24 +311,65 @@ class Rainbow_Address_Bar {
 		);
 
 		// id and name of form element should be same as the setting name.
-		$post_selected = get_option( 'rab-post-type' );
+		$post_selected   = get_option( 'rab-post-type' );
+		$enable_darkmode = get_option( 'rab-dark-mode-switch' );
+
+		ob_start();
+		?>
+		<div class="rab-post-list">
+			<div class="rab-post-list-input">
+				<b class="rab-margin-label"> <?php echo esc_html__( 'Post Type Name', 'rainbow-address-bar' ); ?> </b>
+			</div>
+			<br/>
+			<div class="rab-post-list-button">
+				<b class="rab-margin-label"> <?php echo esc_html__( 'Light Mode Color', 'rainbow-address-bar' ); ?> </b>
+				<?php if ( '0' !== $enable_darkmode ) { ?>
+					<b class="rab-margin-label"> <?php echo esc_html__( 'Dark Mode  Color', 'rainbow-address-bar' ); ?> </b>
+				<?php } ?>
+			</div>
+			<br/>
+		</div>
+		<?php
+		echo ob_get_clean(); // WPCS: XSS OK.
 
 		$temp_var = 0;
-		foreach ( $all_post_type as  $post_type ) {
-			$is_checked = '';
-			$post_color = '';
+		foreach ( $all_post_type as $post_type ) {
+			$is_checked      = '';
+			$post_color      = '';
+			$post_color_dark = '';
+			$post_type_obj   = get_post_type_object( $post_type );
 			if ( is_array( $post_selected ) ) {
 				foreach ( $post_selected as $key => $value ) {
 					if ( in_array( $post_type, $value, true ) ) {
-						$is_checked = esc_attr( 'checked' );
-						$post_color = $value['rab_color'];
+						$is_checked      = ( esc_attr( 'checked' ) ) ? ( esc_attr( 'checked' ) ) : '';
+						$post_color      = ( isset( $value['rab_color'] ) ) ? ( $value['rab_color'] ) : '';
+						$post_color_dark = ( isset( $value['rab_color_dark'] ) ) ? ( $value['rab_color_dark'] ) : '';
 					}
 				}
 			}
-			printf( '<div class="rab-post-list">' );
-			printf( '<div class="rab-post-list-input"><label class="switch"><input type="checkbox" name="rab-post-type[%1$s][post_type]" class="rab-post-switch" value="%2$s" %3$s ><span class="slider round"></span></label> %2$s </div>', esc_html( $temp_var ), esc_attr( ( $post_type ) ), esc_html( $is_checked ) );
-			printf( '<div class="rab-post-list-button"><input type="text" name="rab-post-type[%1$s][rab_color]" id="rab-post-color" class="rab-post-color" value="%2$s" /></div><br>', esc_html( $temp_var ), esc_html( $post_color ) );
-			printf( '</div>' );
+			ob_start();
+			?>
+			<div class="rab-post-list">
+				<div class="rab-post-list-input">
+					<label class="switch">
+						<input type="checkbox" name="rab-post-type[<?php echo esc_attr( $temp_var ); ?>][post_type]" class="rab-post-switch" value="<?php echo esc_attr( ( $post_type ) ); ?>" <?php echo esc_html( $is_checked ); ?> >
+							<span class="slider round"></span>
+					</label>
+					<?php echo esc_html( ( $post_type_obj->labels->singular_name ) ); ?> 
+				</div>
+				<br/>
+				<div class="rab-post-list-button">
+					<input type="text" name="rab-post-type[<?php echo esc_attr( $temp_var ); ?>][rab_color]" id="rab-post-color" class="rab-post-color" value="<?php echo esc_attr( $post_color ); ?>" />
+					<?php if ( '0' !== $enable_darkmode ) { ?>
+						<input type="text" name="rab-post-type[<?php echo esc_attr( $temp_var ); ?>][rab_color_dark]" id="rab-post-color-dark" class="rab-post-color rab-post-color-dark" value="<?php echo esc_attr( $post_color_dark ); ?>" />
+					<?php } else { ?>
+						<input type="hidden" name="rab-post-type[<?php echo esc_attr( $temp_var ); ?>][rab_color_dark]" id="rab-post-color-dark" class="rab-post-color-dark" value="<?php echo esc_attr( $post_color_dark ); ?>" />
+					<?php } ?>
+				</div>
+				<br/>
+			</div>
+			<?php
+			echo ob_get_clean(); // WPCS: XSS OK.
 			$temp_var++;
 		}
 		$temp_var = 0;
@@ -351,13 +430,19 @@ class Rainbow_Address_Bar {
 		wp_nonce_field( basename( __FILE__ ), 'rab-nonce' );
 
 		// Get the rab_color data if it's already been entered.
-		$rab_color = get_option( 'rab-color' );
+		$rab_color       = get_option( 'rab-color' );
+		$enable_darkmode = get_option( 'rab-dark-mode-switch' );
 		if ( null !== get_post_meta( $post->ID, 'rab-color', true ) && '' !== get_post_meta( $post->ID, 'rab-color', true ) ) {
 			$rab_color = get_post_meta( $post->ID, 'rab-color', true );
 		}
 
-		// Output the field.
-		printf( '<input type="text" name="rab-color" id="rab-color" class="rab-post-color" value="%1$s" />', esc_html( $rab_color ) );
+		// id and name of form element should be same as the setting name.
+		printf( '<input type="text" name="rab-color[0][light-mode]" id="rab-color" class="rab-post-color" value="%1$s" />', ( isset( $rab_color[0]['light-mode'] ) && ! empty( $rab_color[0]['light-mode'] ) ) ? esc_html( $rab_color[0]['light-mode'] ) : '#ffffff' );
+		if ( '0' !== $enable_darkmode ) {
+			printf( '<input type="text" name="rab-color[0][dark-mode]" id="rab-color-dark" class="rab-post-color rab-post-color-dark" value="%1$s" />', ( isset( $rab_color[0]['dark-mode'] ) && ! empty( $rab_color[0]['dark-mode'] ) ) ? esc_html( $rab_color[0]['dark-mode'] ) : '#000000' );
+		} else {
+			printf( '<input type="hidden" name="rab-color[0][dark-mode]" id="rab-color-dark" class="rab-post-color-dark" value="%1$s" />', ( isset( $rab_color[0]['dark-mode'] ) && ! empty( $rab_color[0]['dark-mode'] ) ) ? esc_html( $rab_color[0]['dark-mode'] ) : '#000000' );
+		}
 	}
 
 	/**
@@ -381,7 +466,7 @@ class Rainbow_Address_Bar {
 
 		// Now that we're authenticated, time to save the data.
 		// This sanitizes the data from the field and saves it into an array $rab_meta.
-		$rab_meta['rab-color'] = esc_textarea( sanitize_textarea_field( wp_unslash( $_POST['rab-color'] ) ) );
+		$rab_meta['rab-color'] = $_POST['rab-color']; //phpcs:disable
 		// Cycle through the $rab_meta array.
 		// Note, in this example we just have one item, but this is helpful if you have multiple.
 		foreach ( $rab_meta as $key => $value ) :
