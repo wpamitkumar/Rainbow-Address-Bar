@@ -69,6 +69,7 @@ class Rainbow_Address_Bar {
 	 */
 	public function rab_active_function() {
 		add_option( 'rab-switch', 1 );
+		add_option( 'rab-dark-mode-switch', 0 );
 		add_option( 'rab-amp-switch', 0 );
 	}
 
