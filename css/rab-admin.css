@@ -143,6 +143,14 @@
 	margin-bottom: 5px;
 }
 
+.rab-label-align-center {
+	display: block;
+	text-align: center;
+	width: 110px;
+	font-weight: 600;
+	margin-bottom: 5px
+}
+
 @media only screen and ( max-device-width: 480px ) {
 	.appearance_page_rainbow-address-bar .rab-post-list {
 		flex-flow: row wrap;

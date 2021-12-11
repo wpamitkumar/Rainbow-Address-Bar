@@ -258,8 +258,10 @@ class Rainbow_Address_Bar {
 		$rab_color       = get_option( 'rab-color' );
 		$enable_darkmode = get_option( 'rab-dark-mode-switch' );
 		// id and name of form element should be same as the setting name.
+		printf( '<label class="rab-label-align-center" for="rab-color">%1$s</label>', esc_html__( 'Light Mode Color', 'rainbow-address-bar' ) );
 		printf( '<input type="text" name="rab-color[0][light-mode]" id="rab-color" class="rab-post-color" value="%1$s" />', ( isset( $rab_color[0]['light-mode'] ) && ! empty( $rab_color[0]['light-mode'] ) ) ? esc_html( $rab_color[0]['light-mode'] ) : '#ffffff' );
 		if ( '0' !== $enable_darkmode ) {
+			printf( '<label class="rab-label-align-center" for="rab-color-dark">%1$s</label>', esc_html__( 'Dark Mode Color', 'rainbow-address-bar' ) );
 			printf( '<input type="text" name="rab-color[0][dark-mode]" id="rab-color-dark" class="rab-post-color rab-post-color-dark" value="%1$s" />', ( isset( $rab_color[0]['dark-mode'] ) && ! empty( $rab_color[0]['dark-mode'] ) ) ? esc_html( $rab_color[0]['dark-mode'] ) : '#000000' );
 		} else {
 			printf( '<input type="hidden" name="rab-color[0][dark-mode]" id="rab-color-dark" class="rab-post-color-dark" value="%1$s" />', ( isset( $rab_color[0]['dark-mode'] ) && ! empty( $rab_color[0]['dark-mode'] ) ) ? esc_html( $rab_color[0]['dark-mode'] ) : '#000000' );
